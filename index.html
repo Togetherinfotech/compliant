@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-10">
+    <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
+        <h1 class="text-3xl font-bold text-center text-indigo-600 mb-8">Complaint Form</h1>
+        <form name="google-sheet" class="space-y-6">
+            <!-- Team Name -->
+            <div>
+                <label class="block text-lg font-medium text-gray-700" for="teamName">Team Name</label>
+                <input type="text" id="teamName" name="teamName" required class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Enter your team name">
+            </div>
+            <!-- Your Name -->
+            <div>
+                <label class="block text-lg font-medium text-gray-700" for="yourName">Your Name</label>
+                <input type="text" id="yourName" name="yourName" required class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Enter your name">
+            </div>
+            <!-- Complaint Message -->
+            <div>
+                <label class="block text-lg font-medium text-gray-700" for="complaintMessage">Complaint</label>
+                <textarea id="complaintMessage" name="complaintMessage" rows="6" required class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Enter your complaint here"></textarea>
+            </div>
+            <!-- File Upload -->
+            <div>
+                <label class="block text-lg font-medium text-gray-700" for="fileUpload">Upload Image (Optional)</label>
+                <input type="file" id="fileUpload" name="fileUpload" class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            </div>
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out">Submit</button>
+            </div>
+            <!-- Hidden Date Field -->
+            <input type="hidden" id="submissionDate" name="submissionDate">
+        </form>
+    </div>
+
+    <script>
+        // Set the submission date to today's date
+        document.getElementById('submissionDate').value = new Date().toISOString().split('T')[0];
+        
+        // Google Sheets script URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwkLeokbv7nAZjINl95NirAjkbhkb7OWrYnyIWO3GbL883jbn-DjxQrZ5gMCSrVxoFr/exec';
+        
+        // Form element
+        const form = document.forms['google-sheet'];
+        
+        // Form submission event listener
+        form.addEventListener('submit', e => {
+            e.preventDefault();  // Prevent default form submission behavior
+            
+            // Submit form data to Google Sheets
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    console.log('Success!', response);
+                    alert('Submission successful');
+                    window.location.href = 'https://togetherinfotech.github.io/Thankyou/';
+                })
+                .catch(error => console.error('Error!', error.message));
+        });
+    </script>
+</body>
+</html>
